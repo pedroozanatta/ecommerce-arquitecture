@@ -2,7 +2,7 @@ package ecommerce.ui;
 
 import ecommerce.model.*;
 import ecommerce.model.pagamento.*;
-import ecommerce.service.PedidoService;
+import ecommerce.services.PedidoService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,24 +10,24 @@ import java.util.Scanner;
 
 public class Menu {
 
-    private final Scanner       scanner     = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
     private final PedidoService pedidoService = new PedidoService();
-    private final List<Produto> catalogo    = new ArrayList<>();
-    private final List<Usuario> usuarios    = new ArrayList<>();
+    private final List<Produto> catalogo = new ArrayList<>();
+    private final List<Usuario> usuarios = new ArrayList<>();
 
     private Usuario usuarioLogado = null;
-    private Pedido  pedidoAtual  = null;
+    private Pedido pedidoAtual = null;
 
     public Menu() {
         carregarCatalogo();
     }
 
     private void carregarCatalogo() {
-        catalogo.add(new Produto("Notebook Dell",      3500.00, 10));
-        catalogo.add(new Produto("Mouse Logitech",      120.00, 50));
-        catalogo.add(new Produto("Teclado Mecânico",    250.00, 30));
-        catalogo.add(new Produto("Monitor 24\"",       1200.00, 15));
-        catalogo.add(new Produto("Headset Gamer",       350.00, 20));
+        catalogo.add(new Produto("Notebook Dell",   3500.00, 10));
+        catalogo.add(new Produto("Mouse Logitech",   120.00, 50));
+        catalogo.add(new Produto("Teclado Mecânico", 250.00, 30));
+        catalogo.add(new Produto("Monitor 24\"",    1200.00, 15));
+        catalogo.add(new Produto("Headset Gamer",    350.00, 20));
     }
 
     public void iniciar() {
@@ -45,9 +45,7 @@ public class Menu {
     }
 
     private int menuInicial() {
-        System.out.println("\n╔══════════════════════════════╗");
         System.out.println("       E-COMMERCE JAVA          ");
-        System.out.println("╚══════════════════════════════╝");
         System.out.println("  1. Cadastrar usuário");
         System.out.println("  2. Fazer login");
         System.out.println("  0. Sair");
@@ -64,9 +62,7 @@ public class Menu {
     }
 
     private int menuPrincipal() {
-        System.out.println("\n╔══════════════════════════════╗");
         System.out.println("  Olá, " + usuarioLogado.getEmail());
-        System.out.println("╚══════════════════════════════╝");
         System.out.println("  1. Ver catálogo de produtos");
         System.out.println("  2. Adicionar produto ao carrinho");
         System.out.println("  3. Ver carrinho");
@@ -85,8 +81,11 @@ public class Menu {
             case 4 -> removerDoCarrinho();
             case 5 -> fluxoFinalizarCompra();
             case 6 -> listarPedidos();
-            case 7 -> { usuarioLogado = null; pedidoAtual = null;
-                System.out.println("  Logout realizado."); }
+            case 7 -> {
+                usuarioLogado = null;
+                pedidoAtual = null;
+                System.out.println("  Logout realizado.");
+            }
             case 0 -> { }
             default -> System.out.println("  Opção inválida.");
         }
@@ -99,13 +98,15 @@ public class Menu {
         String email = scanner.nextLine().trim();
 
         boolean jaExiste = usuarios.stream().anyMatch(u -> u.getEmail().equals(email));
-        if (jaExiste) { System.out.println("  E-mail já cadastrado."); return; }
+        if (jaExiste) {
+            System.out.println("  E-mail já cadastrado.");
+            return;
+        }
 
         System.out.print("  Senha  : ");
         String senha = scanner.nextLine().trim();
 
-        Usuario novo = new Usuario(email, senha);
-        usuarios.add(novo);
+        usuarios.add(new Usuario(email, senha));
         System.out.println("  Usuário cadastrado com sucesso!");
     }
 
@@ -143,11 +144,17 @@ public class Menu {
                 .findFirst()
                 .orElse(null);
 
-        if (produto == null) { System.out.println("  Produto não encontrado."); return; }
+        if (produto == null) {
+            System.out.println("  Produto não encontrado.");
+            return;
+        }
 
         System.out.print("  Quantidade: ");
         int qtd = lerInt();
-        if (qtd <= 0) { System.out.println("  Quantidade inválida."); return; }
+        if (qtd <= 0) {
+            System.out.println("  Quantidade inválida.");
+            return;
+        }
 
         try {
             usuarioLogado.adicionarCarrinho(produto, qtd);
@@ -202,7 +209,10 @@ public class Menu {
         int opcPgto = lerInt();
 
         Pagamento pagamento = coletarPagamento(opcPgto, pedidoAtual.getPrecoTotal());
-        if (pagamento == null) { System.out.println("  Pagamento cancelado."); return; }
+        if (pagamento == null) {
+            System.out.println("  Pagamento cancelado.");
+            return;
+        }
 
         pedidoService.processarPagamento(pedidoAtual, pagamento);
         pedidoAtual.exibirResumo();
@@ -210,15 +220,15 @@ public class Menu {
 
     private Endereco coletarEndereco() {
         System.out.print("  Rua     : ");
-        String rua    = scanner.nextLine().trim();
+        String rua = scanner.nextLine().trim();
         System.out.print("  Bairro  : ");
         String bairro = scanner.nextLine().trim();
         System.out.print("  CEP     : ");
-        String cep    = scanner.nextLine().trim();
+        String cep = scanner.nextLine().trim();
         System.out.print("  Cidade  : ");
         String cidade = scanner.nextLine().trim();
         System.out.print("  UF (ex: SP): ");
-        String uf     = scanner.nextLine().trim().toUpperCase();
+        String uf = scanner.nextLine().trim().toUpperCase();
         return new Endereco(rua, bairro, cep, cidade, uf);
     }
 
@@ -253,7 +263,7 @@ public class Menu {
             System.out.println("\n  Nenhum pedido realizado.");
             return;
         }
-        System.out.println("\n  -- MEUS PEDIDOS --");
+        System.out.println("\n  MEUS PEDIDOS");
         for (Pedido p : pedidos) {
             System.out.printf("  Pedido #%d | Status: %-12s | Total: R$ %.2f%n",
                     p.getId(), p.getStatus(), p.getPrecoTotal());

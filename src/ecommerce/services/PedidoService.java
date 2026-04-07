@@ -1,4 +1,4 @@
-package ecommerce.service;
+package ecommerce.services;
 
 import ecommerce.model.Pedido;
 import ecommerce.model.Transporte;

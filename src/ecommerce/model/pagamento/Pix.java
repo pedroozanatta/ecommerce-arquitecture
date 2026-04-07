@@ -23,7 +23,7 @@ public class Pix extends Pagamento {
 
     @Override
     public void processarPagamento() {
-        System.out.println("\n  === PIX GERADO ===");
+        System.out.println("\n  PIX GERADO");
         System.out.println("  Chave Pix : " + chave);
         System.out.println("  QR Code   : " + qrCode.substring(0, Math.min(40, qrCode.length())) + "...");
         System.out.println("  Expira em : " + expiraEm);

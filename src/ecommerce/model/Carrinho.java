@@ -65,6 +65,5 @@ public class Carrinho {
             itensCarrinho.forEach(System.out::println);
             System.out.printf("  Subtotal: R$ %.2f%n", totalCarrinho());
         }
-        System.out.println("  ----------------");
     }
 }

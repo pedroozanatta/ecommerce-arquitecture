@@ -25,7 +25,7 @@ public class Boleto extends Pagamento {
 
     @Override
     public void processarPagamento() {
-        System.out.println("\n  === BOLETO GERADO ===");
+        System.out.println("\n  BOLETO GERADO");
         System.out.println("  Banco       : " + banco);
         System.out.println("  Cód. Barras : " + codigoBarras);
         System.out.println("  Vencimento  : " + dataLimite);

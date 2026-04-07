@@ -4,14 +4,14 @@ public class Transporte {
 
     private static int contador = 1;
 
-    private int    id;
-    private String metodo;        // PAC, SEDEX, EXPRESS, RETIRADA
+    private int id;
+    private String metodo;
     private double custo;
     private String codigoRastreio;
-    private int    qntDias;
+    private int qntDias;
 
     public Transporte(String metodo) {
-        this.id     = contador++;
+        this.id = contador++;
         this.metodo = metodo.toUpperCase();
         calcularFrete();
     }
@@ -40,11 +40,11 @@ public class Transporte {
         System.out.println("  Código de rastreio gerado: " + codigoRastreio);
     }
 
-    public int    getId()             { return id; }
-    public String getMetodo()         { return metodo; }
-    public double getCusto()          { return custo; }
+    public int getId() { return id; }
+    public String getMetodo() { return metodo; }
+    public double getCusto() { return custo; }
     public String getCodigoRastreio() { return codigoRastreio; }
-    public int    getQntDias()        { return qntDias; }
+    public int getQntDias() { return qntDias; }
 
     @Override
     public String toString() {
